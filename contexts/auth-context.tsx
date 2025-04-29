@@ -71,15 +71,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [pathname, router])
 
   // Redirect unauthenticated users from protected routes
-  useEffect(() => {
-    if (!isBrowser || isLoading || isAuthenticated) return
+  // useEffect(() => {
+  //   if (!isBrowser || isLoading || isAuthenticated) return
 
-    const protectedRoutes = ["/dashboard", "/profile", "/settings", "/courses/enrolled"]
+  //   const protectedRoutes = ["/dashboard", "/profile", "/settings", "/courses/enrolled"]
 
-    if (protectedRoutes.some((route) => pathname?.startsWith(route))) {
-      router.push(`/auth/login?redirect=${encodeURIComponent(pathname || "/")}`)
-    }
-  }, [isAuthenticated, isLoading, pathname, router])
+  //   if (protectedRoutes.some((route) => pathname?.startsWith(route))) {
+  //     router.push(`/auth/login?redirect=${encodeURIComponent(pathname || "/")}`)
+  //   }
+  // }, [isAuthenticated, isLoading, pathname, router])
 
   const login = async (email: string, password: string) => {
     try {
