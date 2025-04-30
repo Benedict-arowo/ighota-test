@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 
 import { ProgressCard } from "@/components/dashboard/progress-card"
 import { CourseCard } from "@/components/dashboard/course-card"
-import { PerformanceChart } from "@/components/dashboard/performance-chart"
+import { DetailedPerformanceChart } from "@/components/dashboard/detailed-performance-chart"
 import { UpcomingAssignments } from "@/components/dashboard/upcoming-assignments"
 import { QuizResults } from "@/components/dashboard/quiz-results"
 
@@ -56,18 +56,104 @@ const enrolledCourses = [
 ]
 
 const subjectPerformance = [
-  { subject: "Mathematics", score: 85, color: "bg-blue-500" },
-  { subject: "English", score: 72, color: "bg-green-500" },
-  { subject: "Science", score: 90, color: "bg-purple-500" },
-  { subject: "History", score: 65, color: "bg-yellow-500" },
-  { subject: "Geography", score: 78, color: "bg-pink-500" },
+  {
+    subject: "Mathematics",
+    score: 85,
+    color: "bg-blue-500",
+    subtopics: [
+      { name: "Algebra", score: 92, color: "bg-blue-500" },
+      { name: "Geometry", score: 78, color: "bg-blue-500" },
+      { name: "Calculus", score: 85, color: "bg-blue-500" },
+      { name: "Statistics", score: 88, color: "bg-blue-500" },
+    ],
+  },
+  {
+    subject: "English",
+    score: 72,
+    color: "bg-green-500",
+    subtopics: [
+      { name: "Grammar", score: 80, color: "bg-green-500" },
+      { name: "Literature", score: 75, color: "bg-green-500" },
+      { name: "Composition", score: 68, color: "bg-green-500" },
+      { name: "Comprehension", score: 65, color: "bg-green-500" },
+    ],
+  },
+  {
+    subject: "Science",
+    score: 90,
+    color: "bg-purple-500",
+    subtopics: [
+      { name: "Biology", score: 95, color: "bg-purple-500" },
+      { name: "Chemistry", score: 88, color: "bg-purple-500" },
+      { name: "Physics", score: 92, color: "bg-purple-500" },
+      { name: "Earth Science", score: 85, color: "bg-purple-500" },
+    ],
+  },
+  {
+    subject: "History",
+    score: 65,
+    color: "bg-yellow-500",
+    subtopics: [
+      { name: "Ancient History", score: 70, color: "bg-yellow-500" },
+      { name: "Medieval History", score: 62, color: "bg-yellow-500" },
+      { name: "Modern History", score: 68, color: "bg-yellow-500" },
+      { name: "World Wars", score: 60, color: "bg-yellow-500" },
+    ],
+  },
+  {
+    subject: "Geography",
+    score: 78,
+    color: "bg-pink-500",
+    subtopics: [
+      { name: "Physical Geography", score: 82, color: "bg-pink-500" },
+      { name: "Human Geography", score: 75, color: "bg-pink-500" },
+      { name: "Cartography", score: 80, color: "bg-pink-500" },
+      { name: "Environmental Geography", score: 76, color: "bg-pink-500" },
+    ],
+  },
 ]
 
 const testTypePerformance = [
-  { subject: "Multiple Choice", score: 88, color: "bg-blue-500" },
-  { subject: "Essay", score: 70, color: "bg-green-500" },
-  { subject: "Problem Solving", score: 82, color: "bg-purple-500" },
-  { subject: "Short Answer", score: 75, color: "bg-yellow-500" },
+  {
+    subject: "Multiple Choice",
+    score: 88,
+    color: "bg-blue-500",
+    subtopics: [
+      { name: "Mathematics", score: 92, color: "bg-blue-500" },
+      { name: "English", score: 80, color: "bg-blue-500" },
+      { name: "Science", score: 95, color: "bg-blue-500" },
+    ],
+  },
+  {
+    subject: "Essay",
+    score: 70,
+    color: "bg-green-500",
+    subtopics: [
+      { name: "English Literature", score: 75, color: "bg-green-500" },
+      { name: "History", score: 68, color: "bg-green-500" },
+      { name: "Social Studies", score: 67, color: "bg-green-500" },
+    ],
+  },
+  {
+    subject: "Problem Solving",
+    score: 82,
+    color: "bg-purple-500",
+    subtopics: [
+      { name: "Mathematics", score: 85, color: "bg-purple-500" },
+      { name: "Physics", score: 88, color: "bg-purple-500" },
+      { name: "Chemistry", score: 75, color: "bg-purple-500" },
+    ],
+  },
+  {
+    subject: "Short Answer",
+    score: 75,
+    color: "bg-yellow-500",
+    subtopics: [
+      { name: "Biology", score: 80, color: "bg-yellow-500" },
+      { name: "Geography", score: 78, color: "bg-yellow-500" },
+      { name: "History", score: 65, color: "bg-yellow-500" },
+    ],
+  },
 ]
 
 const upcomingAssignments = [
@@ -89,8 +175,8 @@ const upcomingAssignments = [
     id: "3",
     title: "Physics Lab Report",
     course: "Introduction to Physics",
-    dueDate: "Yesterday",
-    status: "overdue" as const,
+    dueDate: "5 days",
+    status: "upcoming" as const,
   },
 ]
 
@@ -161,7 +247,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <PerformanceChart subjectData={subjectPerformance} testTypeData={testTypePerformance} />
+        <DetailedPerformanceChart subjectData={subjectPerformance} />
         <div className="space-y-4">
           <UpcomingAssignments assignments={upcomingAssignments} />
           <QuizResults results={quizResults} />

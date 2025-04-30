@@ -39,6 +39,29 @@ export default function DonatePage() {
                     </TabsList>
                     <TabsContent value="one-time" className="space-y-4">
                       <div className="space-y-2">
+                        <Label>Select Currency</Label>
+                        <RadioGroup defaultValue="ngn" className="grid grid-cols-2 gap-4">
+                          <div>
+                            <RadioGroupItem value="ngn" id="currency-ngn" className="peer sr-only" />
+                            <Label
+                              htmlFor="currency-ngn"
+                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                            >
+                              <span className="text-xl font-bold">₦ NGN</span>
+                            </Label>
+                          </div>
+                          <div>
+                            <RadioGroupItem value="usd" id="currency-usd" className="peer sr-only" />
+                            <Label
+                              htmlFor="currency-usd"
+                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                            >
+                              <span className="text-xl font-bold">$ USD</span>
+                            </Label>
+                          </div>
+                        </RadioGroup>
+                      </div>
+                      <div className="space-y-2">
                         <Label>Select Amount</Label>
                         <RadioGroup defaultValue="50" className="grid grid-cols-3 gap-4">
                           <div>
@@ -76,6 +99,29 @@ export default function DonatePage() {
                       </div>
                     </TabsContent>
                     <TabsContent value="monthly" className="space-y-4">
+                      <div className="space-y-2">
+                        <Label>Select Currency</Label>
+                        <RadioGroup defaultValue="ngn" className="grid grid-cols-2 gap-4">
+                          <div>
+                            <RadioGroupItem value="ngn" id="currency-ngn-monthly" className="peer sr-only" />
+                            <Label
+                              htmlFor="currency-ngn-monthly"
+                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                            >
+                              <span className="text-xl font-bold">₦ NGN</span>
+                            </Label>
+                          </div>
+                          <div>
+                            <RadioGroupItem value="usd" id="currency-usd-monthly" className="peer sr-only" />
+                            <Label
+                              htmlFor="currency-usd-monthly"
+                              className="flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
+                            >
+                              <span className="text-xl font-bold">$ USD</span>
+                            </Label>
+                          </div>
+                        </RadioGroup>
+                      </div>
                       <div className="space-y-2">
                         <Label>Select Monthly Amount</Label>
                         <RadioGroup defaultValue="20" className="grid grid-cols-3 gap-4">

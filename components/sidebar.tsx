@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { BookOpen, Home, BarChart2, FileText, User, Settings, LogOut } from "lucide-react"
+import { BookOpen, Home, BarChart2, FileText, User, Settings, LogOut, CreditCard } from "lucide-react"
 
 import {
   Sidebar,
@@ -95,10 +95,18 @@ export function DashboardSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/settings")}>
-                  <Link href="/settings">
+                <SidebarMenuButton asChild isActive={isActive("/dashboard/settings")}>
+                  <Link href="/dashboard/settings">
                     <Settings className="h-4 w-4" />
                     <span>Settings</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive("/subscription")}>
+                  <Link href="/subscription">
+                    <CreditCard className="h-4 w-4" />
+                    <span>Subscription</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

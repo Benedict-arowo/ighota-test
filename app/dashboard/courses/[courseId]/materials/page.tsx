@@ -11,7 +11,7 @@ import { FileText, Download, Video, BookOpen, FileQuestion } from "lucide-react"
 interface CourseMaterial {
   id: string
   title: string
-  type: "note" | "video" | "quiz" | "practice"
+  type: "note" | "video" | "quiz" | "practice" | "lesson"
   description: string
   url: string
   module: string
@@ -26,6 +26,7 @@ interface CourseDetail {
     videos: CourseMaterial[]
     quizzes: CourseMaterial[]
     practiceTests: CourseMaterial[]
+    lessons: CourseMaterial[]
   }
 }
 
@@ -52,7 +53,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Number Bases and Modular Arithmetic",
                   type: "note",
                   description: "Comprehensive notes on number bases and modular arithmetic.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes`,
                   module: "Number and Numeration",
                 },
                 {
@@ -60,7 +61,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Algebraic Expressions and Equations",
                   type: "note",
                   description: "Detailed notes on algebraic expressions and solving equations.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes`,
                   module: "Algebra",
                 },
                 {
@@ -68,7 +69,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Geometry Fundamentals",
                   type: "note",
                   description: "Notes covering angles, polygons, circles, and trigonometry.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes`,
                   module: "Geometry",
                 },
                 {
@@ -76,7 +77,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Statistics and Probability",
                   type: "note",
                   description: "Comprehensive notes on data analysis and probability concepts.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes`,
                   module: "Statistics and Probability",
                 },
               ],
@@ -86,7 +87,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Converting Between Number Bases",
                   type: "video",
                   description: "Video tutorial on converting between binary, decimal, and hexadecimal.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes#videos`,
                   module: "Number and Numeration",
                 },
                 {
@@ -94,7 +95,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Solving Quadratic Equations",
                   type: "video",
                   description: "Step-by-step guide to solving quadratic equations.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes#videos`,
                   module: "Algebra",
                 },
                 {
@@ -102,7 +103,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Understanding Trigonometry",
                   type: "video",
                   description: "Comprehensive tutorial on trigonometric functions and identities.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes#videos`,
                   module: "Geometry",
                 },
               ],
@@ -112,7 +113,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Number Bases Quiz",
                   type: "quiz",
                   description: "Test your knowledge of number bases and conversions.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "Number and Numeration",
                 },
                 {
@@ -120,7 +121,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Algebra Quiz",
                   type: "quiz",
                   description: "Test your understanding of algebraic expressions and equations.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "Algebra",
                 },
                 {
@@ -128,7 +129,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Geometry Quiz",
                   type: "quiz",
                   description: "Test your knowledge of geometric principles and calculations.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "Geometry",
                 },
                 {
@@ -136,7 +137,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Statistics and Probability Quiz",
                   type: "quiz",
                   description: "Test your understanding of statistical concepts and probability.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "Statistics and Probability",
                 },
               ],
@@ -146,7 +147,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "WASSCE Mathematics Practice Test 1",
                   type: "practice",
                   description: "Full-length practice test with questions from all modules.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "All Modules",
                 },
                 {
@@ -154,8 +155,34 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "WASSCE Mathematics Practice Test 2",
                   type: "practice",
                   description: "Advanced practice test with challenging questions.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "All Modules",
+                },
+              ],
+              lessons: [
+                {
+                  id: "lesson-1-1",
+                  title: "Introduction to Number Bases",
+                  type: "lesson",
+                  description: "Learn about different number systems and how to convert between them.",
+                  url: `/dashboard/courses/${params.courseId}/lessons/lesson-1-1`,
+                  module: "Number and Numeration",
+                },
+                {
+                  id: "lesson-1-2",
+                  title: "Modular Arithmetic",
+                  type: "lesson",
+                  description: "Understand the principles of modular arithmetic and its applications.",
+                  url: `/dashboard/courses/${params.courseId}/lessons/lesson-1-2`,
+                  module: "Number and Numeration",
+                },
+                {
+                  id: "lesson-2-1",
+                  title: "Algebraic Expressions",
+                  type: "lesson",
+                  description: "Learn how to work with algebraic expressions and simplify them.",
+                  url: `/dashboard/courses/${params.courseId}/lessons/lesson-2-1`,
+                  module: "Algebra",
                 },
               ],
             },
@@ -172,7 +199,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Grammar Rules and Usage",
                   type: "note",
                   description: "Comprehensive notes on English grammar rules and usage.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes`,
                   module: "Grammar",
                 },
                 {
@@ -180,7 +207,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Essay Writing Guide",
                   type: "note",
                   description: "Detailed guide on writing different types of essays.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes`,
                   module: "Essay Writing",
                 },
               ],
@@ -190,7 +217,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Understanding Tenses",
                   type: "video",
                   description: "Video tutorial on past, present, and future tenses.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes#videos`,
                   module: "Grammar",
                 },
                 {
@@ -198,7 +225,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Comprehension Techniques",
                   type: "video",
                   description: "Strategies for answering comprehension questions.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes#videos`,
                   module: "Comprehension",
                 },
               ],
@@ -208,7 +235,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Grammar Quiz",
                   type: "quiz",
                   description: "Test your knowledge of English grammar.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "Grammar",
                 },
                 {
@@ -216,7 +243,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Comprehension Quiz",
                   type: "quiz",
                   description: "Practice answering comprehension questions.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "Comprehension",
                 },
               ],
@@ -226,8 +253,18 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "WASSCE English Practice Test",
                   type: "practice",
                   description: "Full-length practice test covering all aspects of the exam.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "All Modules",
+                },
+              ],
+              lessons: [
+                {
+                  id: "lesson-1-1",
+                  title: "Parts of Speech",
+                  type: "lesson",
+                  description: "Learn about the different parts of speech in English grammar.",
+                  url: `/dashboard/courses/${params.courseId}/lessons/lesson-1-1`,
+                  module: "Grammar",
                 },
               ],
             },
@@ -244,7 +281,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Cell Biology",
                   type: "note",
                   description: "Comprehensive notes on cell structure and functions.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes`,
                   module: "Cell Structure and Organization",
                 },
                 {
@@ -252,7 +289,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Plant and Animal Physiology",
                   type: "note",
                   description: "Detailed notes on physiological processes in plants and animals.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes`,
                   module: "Plant and Animal Physiology",
                 },
               ],
@@ -262,7 +299,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Cell Division",
                   type: "video",
                   description: "Video tutorial on mitosis and meiosis.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes#videos`,
                   module: "Cell Structure and Organization",
                 },
                 {
@@ -270,7 +307,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Ecosystem Dynamics",
                   type: "video",
                   description: "Comprehensive tutorial on ecosystem interactions.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/notes#videos`,
                   module: "Ecology and Environment",
                 },
               ],
@@ -280,7 +317,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Cell Biology Quiz",
                   type: "quiz",
                   description: "Test your knowledge of cell structure and functions.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "Cell Structure and Organization",
                 },
                 {
@@ -288,7 +325,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "Genetics Quiz",
                   type: "quiz",
                   description: "Test your understanding of heredity and variation.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "Genetics and Evolution",
                 },
               ],
@@ -298,8 +335,18 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   title: "JAMB Biology Practice Test",
                   type: "practice",
                   description: "Full-length practice test with questions from all modules.",
-                  url: "#",
+                  url: `/dashboard/courses/${params.courseId}/quiz`,
                   module: "All Modules",
+                },
+              ],
+              lessons: [
+                {
+                  id: "lesson-1-1",
+                  title: "Cell Theory and Structure",
+                  type: "lesson",
+                  description: "Learn about the fundamental principles of cell theory and cell structure.",
+                  url: `/dashboard/courses/${params.courseId}/lessons/lesson-1-1`,
+                  module: "Cell Structure and Organization",
                 },
               ],
             },
@@ -342,6 +389,8 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
         return <FileQuestion className="h-5 w-5" />
       case "practice":
         return <BookOpen className="h-5 w-5" />
+      case "lesson":
+        return <BookOpen className="h-5 w-5" />
       default:
         return <FileText className="h-5 w-5" />
     }
@@ -359,13 +408,36 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
         </Button>
       </div>
 
-      <Tabs defaultValue="notes" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-8">
+      <Tabs defaultValue="lessons" className="w-full">
+        <TabsList className="grid w-full grid-cols-5 mb-8">
+          <TabsTrigger value="lessons">Lessons</TabsTrigger>
           <TabsTrigger value="notes">Notes</TabsTrigger>
           <TabsTrigger value="videos">Videos</TabsTrigger>
           <TabsTrigger value="quizzes">Quizzes</TabsTrigger>
           <TabsTrigger value="practice">Practice Tests</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="lessons">
+          <div className="grid gap-6 md:grid-cols-2">
+            {course.materials.lessons.map((lesson) => (
+              <Card key={lesson.id}>
+                <CardHeader className="flex flex-row items-center gap-2">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <div>
+                    <CardTitle className="text-lg">{lesson.title}</CardTitle>
+                    <CardDescription>{lesson.module}</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">{lesson.description}</p>
+                  <Button asChild className="w-full">
+                    <Link href={lesson.url}>Start Lesson</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
 
         <TabsContent value="notes">
           <div className="grid gap-6 md:grid-cols-2">
@@ -383,7 +455,7 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   <Button asChild className="w-full">
                     <Link href={note.url}>
                       <Download className="mr-2 h-4 w-4" />
-                      Download PDF
+                      View Notes
                     </Link>
                   </Button>
                 </CardContent>

@@ -13,7 +13,7 @@ export default function DashboardLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	const { user, isLoading } = useAuth();
+	const { user, loading } = useAuth();
 	const router = useRouter();
 
 	// useEffect(() => {
@@ -22,7 +22,7 @@ export default function DashboardLayout({
 	//   }
 	// }, [user, loading, router])
 
-	if (isLoading) {
+	if (loading) {
 		return (
 			<div className="flex h-screen items-center justify-center">
 				<div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
@@ -31,7 +31,7 @@ export default function DashboardLayout({
 	}
 
 	// if (!user) {
-	// 	return null;
+	//   return null
 	// }
 
 	return (

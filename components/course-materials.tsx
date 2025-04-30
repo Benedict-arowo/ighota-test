@@ -1,7 +1,7 @@
 import Link from "next/link"
-import { FileText, Video, Download, CheckCircle } from "lucide-react"
+import { FileText, Video, Download, CheckCircle, BookOpen, CheckSquare } from "lucide-react"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
 interface Material {
@@ -16,9 +16,10 @@ interface Material {
 interface CourseMaterialsProps {
   materials: Material[]
   title: string
+  courseId: string
 }
 
-export function CourseMaterials({ materials, title }: CourseMaterialsProps) {
+export function CourseMaterials({ materials, title, courseId }: CourseMaterialsProps) {
   const getIcon = (type: Material["type"]) => {
     switch (type) {
       case "video":
@@ -58,6 +59,20 @@ export function CourseMaterials({ materials, title }: CourseMaterialsProps) {
           ))}
         </div>
       </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button variant="outline" asChild>
+          <Link href={`/dashboard/courses/${courseId}/notes`}>
+            <BookOpen className="mr-2 h-4 w-4" />
+            View Notes
+          </Link>
+        </Button>
+        <Button variant="default" asChild>
+          <Link href={`/dashboard/courses/${courseId}/quiz`}>
+            <CheckSquare className="mr-2 h-4 w-4" />
+            Take Quiz
+          </Link>
+        </Button>
+      </CardFooter>
     </Card>
   )
 }
