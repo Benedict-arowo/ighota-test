@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { AlertCircle, Calendar, CheckCircle, FileText } from "lucide-react"
+import { Calendar, CheckCircle, FileText } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 
 interface Assignment {
@@ -15,7 +15,7 @@ interface Assignment {
   course: string
   courseId: string
   dueDate: string
-  status: "pending" | "submitted" | "graded" | "overdue"
+  status: "pending" | "submitted" | "graded"
   progress: number
   score?: number
   feedback?: string
@@ -68,7 +68,7 @@ export default function AssignmentsPage() {
             course: "Biology",
             courseId: "biology-jamb",
             dueDate: "2023-05-10T23:59:59Z",
-            status: "overdue",
+            status: "pending",
             progress: 0,
           },
           {
@@ -122,12 +122,6 @@ export default function AssignmentsPage() {
             Graded
           </Badge>
         )
-      case "overdue":
-        return (
-          <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400">
-            Overdue
-          </Badge>
-        )
       default:
         return <Badge variant="outline">Unknown</Badge>
     }
@@ -140,6 +134,13 @@ export default function AssignmentsPage() {
     const diffTime = due.getTime() - now.getTime()
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
     return diffDays <= 3 && diffDays > 0
+  }
+
+  // Check if an assignment is past due
+  const isPastDue = (dueDate: string) => {
+    const now = new Date()
+    const due = new Date(dueDate)
+    return now > due
   }
 
   return (
@@ -229,7 +230,7 @@ export default function AssignmentsPage() {
                     <Button
                       asChild
                       className={
-                        assignment.status === "overdue"
+                        isPastDue(assignment.dueDate) && assignment.status === "pending"
                           ? "bg-red-500 hover:bg-red-600 text-white w-full"
                           : assignment.status === "graded"
                             ? "bg-green-500 hover:bg-green-600 text-white w-full"
@@ -239,13 +240,15 @@ export default function AssignmentsPage() {
                       <Link href={`/dashboard/assignments/${assignment.id}`}>
                         {assignment.status === "pending" && assignment.progress === 0
                           ? "Start Assignment"
-                          : assignment.status === "pending"
+                          : assignment.status === "pending" && assignment.progress > 0
                             ? "Continue Assignment"
                             : assignment.status === "submitted"
                               ? "View Submission"
                               : assignment.status === "graded"
                                 ? "View Feedback"
-                                : "Submit Late"}
+                                : isPastDue(assignment.dueDate)
+                                  ? "Submit Late"
+                                  : "Continue Assignment"}
                       </Link>
                     </Button>
                   </CardFooter>
@@ -301,9 +304,20 @@ export default function AssignmentsPage() {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button asChild className="bg-yellow-500 hover:bg-yellow-600 text-black w-full">
+                    <Button
+                      asChild
+                      className={
+                        isPastDue(assignment.dueDate)
+                          ? "bg-red-500 hover:bg-red-600 text-white w-full"
+                          : "bg-yellow-500 hover:bg-yellow-600 text-black w-full"
+                      }
+                    >
                       <Link href={`/dashboard/assignments/${assignment.id}`}>
-                        {assignment.progress === 0 ? "Start Assignment" : "Continue Assignment"}
+                        {assignment.progress === 0
+                          ? "Start Assignment"
+                          : isPastDue(assignment.dueDate)
+                            ? "Submit Late"
+                            : "Continue Assignment"}
                       </Link>
                     </Button>
                   </CardFooter>
@@ -315,7 +329,7 @@ export default function AssignmentsPage() {
         <TabsContent value="submitted">
           <div className="space-y-4">
             {assignments
-              .filter((assignment) => assignment.status === "submitted" || assignment.status === "overdue")
+              .filter((assignment) => assignment.status === "submitted")
               .map((assignment) => (
                 <Card key={assignment.id}>
                   <CardHeader className="flex flex-row items-start justify-between pb-2">
@@ -335,33 +349,10 @@ export default function AssignmentsPage() {
                       <Calendar className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">Due: {formatDate(assignment.dueDate)}</span>
                     </div>
-
-                    {assignment.status === "overdue" && (
-                      <div className="mt-4 p-3 bg-red-50 dark:bg-red-900/20 rounded-md">
-                        <div className="flex items-start gap-2">
-                          <AlertCircle className="h-5 w-5 text-red-500 mt-0.5" />
-                          <div>
-                            <p className="text-sm font-medium text-red-800 dark:text-red-400">Assignment Overdue</p>
-                            <p className="text-sm text-red-700 dark:text-red-500">
-                              This assignment was due on {formatDate(assignment.dueDate)}.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    )}
                   </CardContent>
                   <CardFooter>
-                    <Button
-                      asChild
-                      className={
-                        assignment.status === "overdue"
-                          ? "bg-red-500 hover:bg-red-600 text-white w-full"
-                          : "bg-yellow-500 hover:bg-yellow-600 text-black w-full"
-                      }
-                    >
-                      <Link href={`/dashboard/assignments/${assignment.id}`}>
-                        {assignment.status === "overdue" ? "Submit Late" : "View Submission"}
-                      </Link>
+                    <Button asChild className="bg-yellow-500 hover:bg-yellow-600 text-black w-full">
+                      <Link href={`/dashboard/assignments/${assignment.id}`}>View Submission</Link>
                     </Button>
                   </CardFooter>
                 </Card>

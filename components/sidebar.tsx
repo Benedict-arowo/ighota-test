@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { BookOpen, Home, BarChart2, FileText, User, Settings, LogOut, CreditCard } from "lucide-react"
+import { BookOpen, Home, BarChart2, FileText, User, Settings, LogOut, CreditCard, Award, Sparkles } from "lucide-react"
 
 import {
   Sidebar,
@@ -18,6 +18,8 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { useAuth } from "@/contexts/auth-context"
+import { XpProgress } from "@/components/gamification/xp-progress"
+import { Button } from "@/components/ui/button"
 
 export function DashboardSidebar() {
   const pathname = usePathname()
@@ -27,17 +29,28 @@ export function DashboardSidebar() {
     return pathname === path || pathname.startsWith(`${path}/`)
   }
 
+  // Mock user level data - in a real app, this would come from an API
+  const userLevel = {
+    level: 5,
+    currentXp: 350,
+    xpToNextLevel: 500,
+    totalXpEarned: 1850,
+  }
+
   return (
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            {user?.name?.charAt(0) || "S"}
+            {user?.firstName?.charAt(0) || "S"}
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-medium">{user?.name || "Student"}</span>
+            <span className="text-sm font-medium">{user?.firstName || "Student"}</span>
             <span className="text-xs text-muted-foreground">{user?.email || "student@example.com"}</span>
           </div>
+        </div>
+        <div className="px-4 py-2">
+          <XpProgress userLevel={userLevel} />
         </div>
       </SidebarHeader>
       <SidebarSeparator />
@@ -47,7 +60,7 @@ export function DashboardSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isActive("/dashboard")}>
+                <SidebarMenuButton asChild isActive={isActive("/dashboard") && pathname === "/dashboard"}>
                   <Link href="/dashboard">
                     <Home className="h-4 w-4" />
                     <span>Overview</span>
@@ -75,6 +88,17 @@ export function DashboardSidebar() {
                   <Link href="/dashboard/assignments">
                     <FileText className="h-4 w-4" />
                     <span>Assignments</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={isActive("/dashboard/achievements")}>
+                  <Link href="/dashboard/achievements">
+                    <Award className="h-4 w-4" />
+                    <span>Achievements</span>
+                    <div className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-medium text-primary-foreground">
+                      3
+                    </div>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -113,6 +137,15 @@ export function DashboardSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarSeparator />
+        <div className="px-4 py-2">
+          <Button asChild variant="outline" className="w-full justify-start gap-2">
+            <Link href="/subscription">
+              <Sparkles className="h-4 w-4 text-yellow-500" />
+              <span>Upgrade to Premium</span>
+            </Link>
+          </Button>
+        </div>
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>

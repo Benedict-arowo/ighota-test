@@ -1,374 +1,320 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useParams, notFound } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BookOpen, Clock, FileText, Video, CheckCircle, FileQuestion } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+	BookOpen,
+	FileText,
+	Play,
+	ListChecks,
+	BookmarkIcon,
+} from "lucide-react";
 
-interface Module {
-  id: string
-  title: string
-  description: string
-  lessons: {
-    id: string
-    title: string
-    completed: boolean
-  }[]
-}
-
-interface CourseDetail {
-  id: string
-  title: string
-  description: string
-  instructor: string
-  progress: number
-  totalLessons: number
-  completedLessons: number
-  lastAccessed?: string
-  modules: Module[]
-}
+// Mock course data
+const mockCourse = {
+	id: "1",
+	title: "Introduction to Mathematics",
+	description: "A comprehensive introduction to basic mathematical concepts",
+	instructor: "Dr. Jane Smith",
+	progress: 35,
+	modules: [
+		{
+			id: "1",
+			title: "Module 1: Numbers and Operations",
+			lessons: [
+				{
+					id: "lesson-1-1",
+					title: "Lesson 1: Natural Numbers",
+					completed: true,
+				},
+				{
+					id: "lesson-1-2",
+					title: "Lesson 2: Integer Operations",
+					completed: true,
+				},
+				{ id: "3", title: "Lesson 3: Fractions", completed: false },
+			],
+		},
+		{
+			id: "2",
+			title: "Module 2: Algebra Basics",
+			lessons: [
+				{
+					id: "lesson-2-1",
+					title: "Lesson 1: Variables and Expressions",
+					completed: false,
+				},
+				{ id: "5", title: "Lesson 2: Equations", completed: false },
+				{ id: "6", title: "Lesson 3: Inequalities", completed: false },
+			],
+		},
+	],
+};
 
 export default function CoursePage() {
-  const params = useParams()
-  const courseId = params.courseId as string
+	const params = useParams();
+	const courseId = params.courseId as string;
+	const [course, setCourse] = useState(mockCourse);
+	const [loading, setLoading] = useState(true);
 
-  const [course, setCourse] = useState<CourseDetail | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+	useEffect(() => {
+		// Simulate API call
+		const fetchCourse = async () => {
+			try {
+				// In a real app, you would fetch the course data from an API
+				// const response = await api.get(`/courses/${courseId}`)
+				// setCourse(response.data)
+				setCourse(mockCourse);
+			} catch (error) {
+				console.error("Error fetching course:", error);
+			} finally {
+				setLoading(false);
+			}
+		};
 
-  useEffect(() => {
-    const fetchCourseDetails = async () => {
-      try {
-        // In a real app, this would be an API call
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+		fetchCourse();
+	}, [courseId]);
 
-        // Mock data based on courseId
-        if (courseId === "mathematics-wassce") {
-          setCourse({
-            id: "mathematics-wassce",
-            title: "Mathematics",
-            description: "A comprehensive mathematics course designed to prepare students for the WASSCE examination.",
-            instructor: "Dr. Adebayo Johnson",
-            progress: 35,
-            totalLessons: 24,
-            completedLessons: 8,
-            lastAccessed: "2 days ago",
-            modules: [
-              {
-                id: "module-1",
-                title: "Number and Numeration",
-                description: "Learn about number bases, modular arithmetic, and more.",
-                lessons: [
-                  { id: "lesson-1-1", title: "Introduction to Number Bases", completed: true },
-                  { id: "lesson-1-2", title: "Modular Arithmetic", completed: false },
-                  { id: "lesson-1-3", title: "Fractions and Decimals", completed: false },
-                  { id: "lesson-1-4", title: "Indices, Logarithms and Surds", completed: false },
-                ],
-              },
-              {
-                id: "module-2",
-                title: "Algebra",
-                description: "Master algebraic expressions, equations, and functions.",
-                lessons: [
-                  { id: "lesson-2-1", title: "Algebraic Expressions", completed: false },
-                  { id: "lesson-2-2", title: "Simple Equations and Inequalities", completed: false },
-                  { id: "lesson-2-3", title: "Quadratic Equations", completed: false },
-                  { id: "lesson-2-4", title: "Variation", completed: false },
-                  { id: "lesson-2-5", title: "Logarithmic and Exponential Functions", completed: false },
-                ],
-              },
-              {
-                id: "module-3",
-                title: "Geometry",
-                description: "Explore angles, polygons, circles, and trigonometry.",
-                lessons: [
-                  { id: "lesson-3-1", title: "Angles and Lines", completed: false },
-                  { id: "lesson-3-2", title: "Polygons", completed: false },
-                  { id: "lesson-3-3", title: "Circles", completed: false },
-                  { id: "lesson-3-4", title: "Constructions", completed: false },
-                  { id: "lesson-3-5", title: "Loci", completed: false },
-                  { id: "lesson-3-6", title: "Trigonometry", completed: false },
-                ],
-              },
-              {
-                id: "module-4",
-                title: "Statistics and Probability",
-                description: "Learn data presentation, measures of central tendency, and probability.",
-                lessons: [
-                  { id: "lesson-4-1", title: "Data Presentation", completed: false },
-                  { id: "lesson-4-2", title: "Measures of Central Tendency", completed: false },
-                  { id: "lesson-4-3", title: "Probability", completed: false },
-                  { id: "lesson-4-4", title: "Permutation and Combination", completed: false },
-                ],
-              },
-            ],
-          })
-        } else if (courseId === "english-wassce") {
-          setCourse({
-            id: "english-wassce",
-            title: "English Language",
-            description: "Master the English language for the WASSCE examination.",
-            instructor: "Mrs. Elizabeth Okonkwo",
-            progress: 20,
-            totalLessons: 20,
-            completedLessons: 4,
-            lastAccessed: "1 week ago",
-            modules: [
-              {
-                id: "module-1",
-                title: "Grammar",
-                description: "Learn about parts of speech, tenses, and sentence structure.",
-                lessons: [
-                  { id: "lesson-1-1", title: "Parts of Speech", completed: true },
-                  { id: "lesson-1-2", title: "Tenses", completed: false },
-                  { id: "lesson-1-3", title: "Sentence Structure", completed: false },
-                  { id: "lesson-1-4", title: "Common Errors", completed: false },
-                ],
-              },
-              // More modules would be added here
-            ],
-          })
-        } else if (courseId === "biology-jamb") {
-          setCourse({
-            id: "biology-jamb",
-            title: "Biology",
-            description: "Prepare for the JAMB Biology examination with our comprehensive course.",
-            instructor: "Prof. Chika Nweke",
-            progress: 15,
-            totalLessons: 18,
-            completedLessons: 3,
-            lastAccessed: "3 days ago",
-            modules: [
-              {
-                id: "module-1",
-                title: "Cell Structure and Organization",
-                description: "Learn about cell theory, structure, and functions.",
-                lessons: [
-                  { id: "lesson-1-1", title: "Cell Theory and Structure", completed: true },
-                  { id: "lesson-1-2", title: "Cell Division", completed: false },
-                  { id: "lesson-1-3", title: "Tissues", completed: false },
-                ],
-              },
-              // More modules would be added here
-            ],
-          })
-        } else {
-          // If course not found
-          notFound()
-        }
-      } catch (error) {
-        console.error("Failed to fetch course details:", error)
-        notFound()
-      } finally {
-        setIsLoading(false)
-      }
-    }
+	if (loading) {
+		return (
+			<div className="flex items-center justify-center h-64">
+				<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+			</div>
+		);
+	}
 
-    fetchCourseDetails()
-  }, [courseId])
+	return (
+		<div className="space-y-6">
+			<div>
+				<h1 className="text-3xl font-bold">{course.title}</h1>
+				<p className="text-muted-foreground">{course.description}</p>
+				<p className="text-sm mt-2">Instructor: {course.instructor}</p>
+			</div>
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        <p className="mt-4 text-muted-foreground">Loading course details...</p>
-      </div>
-    )
-  }
+			<Tabs defaultValue="overview">
+				<TabsList className="grid grid-cols-5 w-full max-w-2xl">
+					<TabsTrigger value="overview">Overview</TabsTrigger>
+					<TabsTrigger value="lessons">Lessons</TabsTrigger>
+					<TabsTrigger value="materials">Materials</TabsTrigger>
+					<TabsTrigger value="flashcards">Flashcards</TabsTrigger>
+					<TabsTrigger value="quizzes">Quizzes</TabsTrigger>
+				</TabsList>
+				<TabsContent value="overview" className="space-y-4">
+					<Card>
+						<CardHeader>
+							<CardTitle>Course Progress</CardTitle>
+							<CardDescription>
+								Your current progress in this course
+							</CardDescription>
+						</CardHeader>
+						<CardContent>
+							<div className="h-4 w-full bg-secondary rounded-full overflow-hidden">
+								<div
+									className="h-full bg-primary"
+									style={{
+										width: `${course.progress}%`,
+									}}></div>
+							</div>
+							<p className="text-sm text-muted-foreground mt-2">
+								{course.progress}% complete
+							</p>
+						</CardContent>
+					</Card>
 
-  if (!course) {
-    return notFound()
-  }
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<Card>
+							<CardHeader className="pb-2">
+								<CardTitle className="text-lg">
+									Quick Links
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<div className="space-y-2">
+									<Button
+										variant="outline"
+										className="w-full justify-start"
+										asChild>
+										<Link
+											href={`/dashboard/courses/${courseId}/lessons`}>
+											<Play className="mr-2 h-4 w-4" />
+											Continue Learning
+										</Link>
+									</Button>
+									<Button
+										variant="outline"
+										className="w-full justify-start"
+										asChild>
+										<Link
+											href={`/dashboard/courses/${courseId}/materials`}>
+											<FileText className="mr-2 h-4 w-4" />
+											Course Materials
+										</Link>
+									</Button>
+									<Button
+										variant="outline"
+										className="w-full justify-start"
+										asChild>
+										<Link
+											href={`/dashboard/courses/${courseId}/flashcards`}>
+											<BookmarkIcon className="mr-2 h-4 w-4" />
+											Flashcards
+										</Link>
+									</Button>
+									<Button
+										variant="outline"
+										className="w-full justify-start"
+										asChild>
+										<Link
+											href={`/dashboard/courses/${courseId}/quiz`}>
+											<ListChecks className="mr-2 h-4 w-4" />
+											Quizzes
+										</Link>
+									</Button>
+								</div>
+							</CardContent>
+						</Card>
 
-  return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">{course.title}</h1>
-          <p className="text-muted-foreground">{course.description}</p>
-        </div>
-        <Button asChild variant="outline">
-          <Link href="/dashboard/courses">All Courses</Link>
-        </Button>
-      </div>
+						<Card>
+							<CardHeader className="pb-2">
+								<CardTitle className="text-lg">
+									Course Information
+								</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<div className="space-y-2">
+									<div>
+										<span className="text-sm font-medium">
+											Instructor:
+										</span>
+										<span className="text-sm ml-2">
+											{course.instructor}
+										</span>
+									</div>
+									<div>
+										<span className="text-sm font-medium">
+											Modules:
+										</span>
+										<span className="text-sm ml-2">
+											{course.modules.length}
+										</span>
+									</div>
+									<div>
+										<span className="text-sm font-medium">
+											Total Lessons:
+										</span>
+										<span className="text-sm ml-2">
+											{course.modules.reduce(
+												(acc, module) =>
+													acc + module.lessons.length,
+												0
+											)}
+										</span>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+					</div>
+				</TabsContent>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle>Course Progress</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <span>Overall Completion</span>
-                <span className="font-medium">{course.progress}%</span>
-              </div>
-              <Progress value={course.progress} className="h-2" />
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-1">
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-                <span>
-                  {course.completedLessons}/{course.totalLessons} lessons
-                </span>
-              </div>
-              {course.lastAccessed && (
-                <div className="flex items-center gap-1">
-                  <Clock className="h-4 w-4 text-muted-foreground" />
-                  <span>Last: {course.lastAccessed}</span>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+				<TabsContent value="lessons" className="space-y-4">
+					{course.modules.map((module) => (
+						<Card key={module.id}>
+							<CardHeader>
+								<CardTitle>{module.title}</CardTitle>
+							</CardHeader>
+							<CardContent>
+								<ul className="space-y-2">
+									{module.lessons.map((lesson) => (
+										<li
+											key={lesson.id}
+											className="flex items-center justify-between">
+											<div className="flex items-center">
+												{lesson.completed ? (
+													<div className="h-4 w-4 rounded-full bg-green-500 mr-2"></div>
+												) : (
+													<div className="h-4 w-4 rounded-full border border-gray-300 mr-2"></div>
+												)}
+												<span>{lesson.title}</span>
+											</div>
+											<Button size="sm" asChild>
+												<Link
+													href={`/dashboard/courses/${courseId}/lessons/${lesson.id}`}>
+													{lesson.completed
+														? "Review"
+														: "Start"}
+												</Link>
+											</Button>
+										</li>
+									))}
+								</ul>
+							</CardContent>
+						</Card>
+					))}
+				</TabsContent>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Course Materials</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <Button asChild variant="outline" className="h-auto flex flex-col items-center justify-center py-4">
-                <Link href={`/dashboard/courses/${courseId}/notes`}>
-                  <FileText className="h-8 w-8 mb-2" />
-                  <span>Notes</span>
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="h-auto flex flex-col items-center justify-center py-4">
-                <Link href={`/dashboard/courses/${courseId}/notes#videos`}>
-                  <Video className="h-8 w-8 mb-2" />
-                  <span>Videos</span>
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="h-auto flex flex-col items-center justify-center py-4">
-                <Link href={`/dashboard/courses/${courseId}/quiz`}>
-                  <FileQuestion className="h-8 w-8 mb-2" />
-                  <span>Quizzes</span>
-                </Link>
-              </Button>
-              <Button asChild variant="outline" className="h-auto flex flex-col items-center justify-center py-4">
-                <Link href={`/dashboard/courses/${courseId}/materials`}>
-                  <BookOpen className="h-8 w-8 mb-2" />
-                  <span>All Materials</span>
-                </Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+				<TabsContent value="materials" className="space-y-4">
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<Button
+							variant="outline"
+							className="h-24 flex flex-col items-center justify-center"
+							asChild>
+							<Link
+								href={`/dashboard/courses/${courseId}/materials`}>
+								<FileText className="h-8 w-8 mb-2" />
+								<span>Course Materials</span>
+							</Link>
+						</Button>
+						<Button
+							variant="outline"
+							className="h-24 flex flex-col items-center justify-center"
+							asChild>
+							<Link href={`/dashboard/courses/${courseId}/notes`}>
+								<BookOpen className="h-8 w-8 mb-2" />
+								<span>My Notes</span>
+							</Link>
+						</Button>
+					</div>
+				</TabsContent>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Instructor</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="h-16 w-16 rounded-full bg-muted flex items-center justify-center">
-                <span className="text-2xl font-bold">
-                  {course.instructor
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </span>
-              </div>
-              <div>
-                <h3 className="font-medium">{course.instructor}</h3>
-                <p className="text-sm text-muted-foreground">Course Instructor</p>
-              </div>
-            </div>
-            <Button asChild variant="outline" className="w-full">
-              <Link href="#">View Profile</Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+				<TabsContent value="flashcards" className="space-y-4">
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<Button
+							variant="outline"
+							className="h-24 flex flex-col items-center justify-center"
+							asChild>
+							<Link
+								href={`/dashboard/courses/${courseId}/flashcards`}>
+								<BookmarkIcon className="h-8 w-8 mb-2" />
+								<span>Study Flashcards</span>
+							</Link>
+						</Button>
+					</div>
+				</TabsContent>
 
-      <Tabs defaultValue="modules" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 mb-8">
-          <TabsTrigger value="modules">Course Modules</TabsTrigger>
-          <TabsTrigger value="overview">Course Overview</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="modules" className="space-y-6">
-          {course.modules.map((module, index) => (
-            <Card key={module.id}>
-              <CardHeader>
-                <CardTitle>
-                  Module {index + 1}: {module.title}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">{module.description}</p>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {module.lessons.map((lesson) => (
-                    <li
-                      key={lesson.id}
-                      className="flex items-center justify-between border-b pb-2 last:border-0 last:pb-0"
-                    >
-                      <div className="flex items-center gap-2">
-                        {lesson.completed ? (
-                          <CheckCircle className="h-5 w-5 text-green-500" />
-                        ) : (
-                          <div className="h-5 w-5 rounded-full border-2 border-muted-foreground/30" />
-                        )}
-                        <span>{lesson.title}</span>
-                      </div>
-                      <Button asChild size="sm">
-                        <Link href={`/dashboard/courses/${courseId}/lessons/${lesson.id}`}>
-                          {lesson.completed ? "Review" : "Start"}
-                        </Link>
-                      </Button>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-
-        <TabsContent value="overview">
-          <Card>
-            <CardHeader>
-              <CardTitle>About This Course</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p>
-                This course is designed to prepare students for the {course.id.includes("wassce") ? "WASSCE" : "JAMB"}{" "}
-                examination in {course.title}. It covers all the essential topics required for the exam and provides
-                comprehensive study materials, practice questions, and assessments.
-              </p>
-
-              <div className="space-y-2">
-                <h3 className="font-medium">What You'll Learn</h3>
-                <ul className="list-disc pl-5 space-y-1">
-                  {course.modules.map((module) => (
-                    <li key={module.id}>{module.title}</li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="font-medium">Course Structure</h3>
-                <p>
-                  This course consists of {course.modules.length} modules with a total of {course.totalLessons} lessons.
-                  Each module focuses on a specific area of {course.title} and includes video lectures, reading
-                  materials, practice questions, and assessments to help you master the concepts.
-                </p>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="font-medium">Prerequisites</h3>
-                <p>
-                  Basic understanding of {course.title.toLowerCase()} concepts from junior secondary school level. No
-                  advanced knowledge is required as we'll build your understanding from the ground up.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
+				<TabsContent value="quizzes" className="space-y-4">
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<Button
+							variant="outline"
+							className="h-24 flex flex-col items-center justify-center"
+							asChild>
+							<Link href={`/dashboard/courses/${courseId}/quiz`}>
+								<ListChecks className="h-8 w-8 mb-2" />
+								<span>Take Quiz</span>
+							</Link>
+						</Button>
+					</div>
+				</TabsContent>
+			</Tabs>
+		</div>
+	);
 }

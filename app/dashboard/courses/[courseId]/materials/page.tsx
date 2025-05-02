@@ -6,12 +6,12 @@ import { notFound } from "next/navigation"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FileText, Download, Video, BookOpen, FileQuestion } from "lucide-react"
+import { FileText, Download, Video, BookOpen, FileQuestion, Layers } from "lucide-react"
 
 interface CourseMaterial {
   id: string
   title: string
-  type: "note" | "video" | "quiz" | "practice" | "lesson"
+  type: "note" | "video" | "quiz" | "practice" | "lesson" | "flashcard"
   description: string
   url: string
   module: string
@@ -27,6 +27,7 @@ interface CourseDetail {
     quizzes: CourseMaterial[]
     practiceTests: CourseMaterial[]
     lessons: CourseMaterial[]
+    flashcards: CourseMaterial[]
   }
 }
 
@@ -185,6 +186,40 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   module: "Algebra",
                 },
               ],
+              flashcards: [
+                {
+                  id: "flashcard-1",
+                  title: "Number Bases",
+                  type: "flashcard",
+                  description: "Flashcards for number bases and conversions.",
+                  url: `/dashboard/courses/${params.courseId}/flashcards/number-bases`,
+                  module: "Number and Numeration",
+                },
+                {
+                  id: "flashcard-2",
+                  title: "Algebraic Expressions",
+                  type: "flashcard",
+                  description: "Flashcards for algebraic expressions and equations.",
+                  url: `/dashboard/courses/${params.courseId}/flashcards/algebraic-expressions`,
+                  module: "Algebra",
+                },
+                {
+                  id: "flashcard-3",
+                  title: "Geometry Formulas",
+                  type: "flashcard",
+                  description: "Flashcards for geometry formulas and theorems.",
+                  url: `/dashboard/courses/${params.courseId}/flashcards/geometry-formulas`,
+                  module: "Geometry",
+                },
+                {
+                  id: "flashcard-4",
+                  title: "Statistics Terms",
+                  type: "flashcard",
+                  description: "Flashcards for statistics terms and concepts.",
+                  url: `/dashboard/courses/${params.courseId}/flashcards/statistics-terms`,
+                  module: "Statistics and Probability",
+                },
+              ],
             },
           })
         } else if (params.courseId === "english-wassce") {
@@ -265,6 +300,24 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   description: "Learn about the different parts of speech in English grammar.",
                   url: `/dashboard/courses/${params.courseId}/lessons/lesson-1-1`,
                   module: "Grammar",
+                },
+              ],
+              flashcards: [
+                {
+                  id: "flashcard-1",
+                  title: "Grammar Rules",
+                  type: "flashcard",
+                  description: "Flashcards for English grammar rules.",
+                  url: `/dashboard/courses/${params.courseId}/flashcards/grammar-rules`,
+                  module: "Grammar",
+                },
+                {
+                  id: "flashcard-2",
+                  title: "Vocabulary",
+                  type: "flashcard",
+                  description: "Flashcards for English vocabulary.",
+                  url: `/dashboard/courses/${params.courseId}/flashcards/vocabulary`,
+                  module: "Vocabulary",
                 },
               ],
             },
@@ -349,6 +402,24 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   module: "Cell Structure and Organization",
                 },
               ],
+              flashcards: [
+                {
+                  id: "flashcard-1",
+                  title: "Cell Biology",
+                  type: "flashcard",
+                  description: "Flashcards for cell structure and functions.",
+                  url: `/dashboard/courses/${params.courseId}/flashcards/cell-biology`,
+                  module: "Cell Structure and Organization",
+                },
+                {
+                  id: "flashcard-2",
+                  title: "Genetics",
+                  type: "flashcard",
+                  description: "Flashcards for genetics and inheritance.",
+                  url: `/dashboard/courses/${params.courseId}/flashcards/genetics`,
+                  module: "Genetics and Evolution",
+                },
+              ],
             },
           })
         } else {
@@ -391,6 +462,8 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
         return <BookOpen className="h-5 w-5" />
       case "lesson":
         return <BookOpen className="h-5 w-5" />
+      case "flashcard":
+        return <Layers className="h-5 w-5" />
       default:
         return <FileText className="h-5 w-5" />
     }
@@ -409,12 +482,13 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
       </div>
 
       <Tabs defaultValue="lessons" className="w-full">
-        <TabsList className="grid w-full grid-cols-5 mb-8">
+        <TabsList className="grid w-full grid-cols-6 mb-8">
           <TabsTrigger value="lessons">Lessons</TabsTrigger>
           <TabsTrigger value="notes">Notes</TabsTrigger>
           <TabsTrigger value="videos">Videos</TabsTrigger>
           <TabsTrigger value="quizzes">Quizzes</TabsTrigger>
           <TabsTrigger value="practice">Practice Tests</TabsTrigger>
+          <TabsTrigger value="flashcards">Flashcards</TabsTrigger>
         </TabsList>
 
         <TabsContent value="lessons">
@@ -523,6 +597,28 @@ export default function CourseMaterialsPage({ params }: { params: { courseId: st
                   <p className="text-sm text-muted-foreground mb-4">{test.description}</p>
                   <Button asChild className="w-full">
                     <Link href={test.url}>Start Practice Test</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="flashcards">
+          <div className="grid gap-6 md:grid-cols-2">
+            {course.materials.flashcards.map((flashcard) => (
+              <Card key={flashcard.id}>
+                <CardHeader className="flex flex-row items-center gap-2">
+                  <Layers className="h-5 w-5 text-primary" />
+                  <div>
+                    <CardTitle className="text-lg">{flashcard.title}</CardTitle>
+                    <CardDescription>{flashcard.module}</CardDescription>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">{flashcard.description}</p>
+                  <Button asChild className="w-full">
+                    <Link href={flashcard.url}>Study Flashcards</Link>
                   </Button>
                 </CardContent>
               </Card>

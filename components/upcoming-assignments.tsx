@@ -1,11 +1,14 @@
+import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Calendar } from "lucide-react"
 
 interface Assignment {
   id: string
   title: string
   course: string
   dueDate: string
-  status: "upcoming"
+  status: "pending"
 }
 
 interface UpcomingAssignmentsProps {
@@ -13,6 +16,24 @@ interface UpcomingAssignmentsProps {
 }
 
 export function UpcomingAssignments({ assignments }: UpcomingAssignmentsProps) {
+  // Format date to a more readable format
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    })
+  }
+
+  // Check if an assignment is due soon (within 3 days)
+  const isDueSoon = (dueDate: string) => {
+    const now = new Date()
+    const due = new Date(dueDate)
+    const diffTime = due.getTime() - now.getTime()
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return diffDays <= 3 && diffDays > 0
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -27,11 +48,17 @@ export function UpcomingAssignments({ assignments }: UpcomingAssignmentsProps) {
               <div key={assignment.id} className="flex items-center justify-between rounded-lg border p-3">
                 <div className="space-y-1">
                   <h3 className="font-medium">{assignment.title}</h3>
-                  <p className="text-sm text-muted-foreground">{assignment.course}</p>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-3 w-3 text-muted-foreground" />
+                    <p className="text-xs text-muted-foreground">
+                      {assignment.course} • Due: {formatDate(assignment.dueDate)}
+                      {isDueSoon(assignment.dueDate) && <span className="ml-1 text-red-500 font-medium">Soon!</span>}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="text-sm text-muted-foreground">Due: {assignment.dueDate}</div>
-                </div>
+                <Button asChild size="sm">
+                  <Link href={`/dashboard/assignments/${assignment.id}`}>View</Link>
+                </Button>
               </div>
             ))
           )}

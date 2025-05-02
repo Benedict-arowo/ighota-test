@@ -1,7 +1,7 @@
 "use client";
 
-import { Quiz } from "@/components/quiz";
 import { useParams } from "next/navigation";
+import { Quiz } from "@/components/quiz";
 
 // Mock quiz data - in a real app, this would come from an API
 const quizzes = {

@@ -31,36 +31,14 @@ const enrolledCourses = [
 		image: "/placeholder.svg?height=200&width=400",
 	},
 	{
-		id: "biology-jamb",
-		title: "Introduction to Physics",
+		id: "physics-basics",
+		title: "Physics Basics",
 		description:
-			"Discover the fundamental principles of physics and how they apply to the world around us.",
+			"Learn the fundamental principles of physics including motion, force, and energy.",
 		progress: 20,
-		totalLessons: 18,
-		completedLessons: 3,
-		lastAccessed: "1 week ago",
-		image: "/placeholder.svg?height=200&width=400",
-	},
-	{
-		id: "4",
-		title: "World History",
-		description:
-			"Explore the major events and developments throughout human history.",
-		progress: 60,
-		totalLessons: 20,
-		completedLessons: 12,
-		lastAccessed: "3 days ago",
-		image: "/placeholder.svg?height=200&width=400",
-	},
-	{
-		id: "5",
-		title: "Computer Science Fundamentals",
-		description:
-			"Learn the basics of programming, algorithms, and computer systems.",
-		progress: 30,
-		totalLessons: 25,
-		completedLessons: 7,
-		lastAccessed: "5 days ago",
+		totalLessons: 10,
+		completedLessons: 2,
+		lastAccessed: "Today",
 		image: "/placeholder.svg?height=200&width=400",
 	},
 ];

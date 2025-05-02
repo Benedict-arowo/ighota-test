@@ -1,7 +1,7 @@
 "use client";
 
-import { CourseNotes } from "@/components/course-notes";
 import { useParams } from "next/navigation";
+import { CourseNotes } from "@/components/course-notes";
 
 // Mock notes data - in a real app, this would come from an API
 const courseNotes = {

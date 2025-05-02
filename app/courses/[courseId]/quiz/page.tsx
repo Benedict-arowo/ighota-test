@@ -95,6 +95,37 @@ const quizzes = {
 			// More questions would be added here
 		],
 	},
+	"physics-basic-quiz": {
+		title: "Basic Physics Quiz",
+		questions: [
+			{
+				id: "q1",
+				question: "What is the SI unit of force?",
+				options: [
+					{ id: "a", label: "A", text: "Joule" },
+					{ id: "b", label: "B", text: "Newton" },
+					{ id: "c", label: "C", text: "Pascal" },
+					{ id: "d", label: "D", text: "Watt" },
+				],
+				correctOptionId: "b",
+				explanation:
+					"The SI unit of force is the Newton (N), named after Sir Isaac Newton.",
+			},
+			{
+				id: "q2",
+				question: "Which of the following quantities is a vector?",
+				options: [
+					{ id: "a", label: "A", text: "Speed" },
+					{ id: "b", label: "B", text: "Distance" },
+					{ id: "c", label: "C", text: "Velocity" },
+					{ id: "d", label: "D", text: "Mass" },
+				],
+				correctOptionId: "c",
+				explanation:
+					"Velocity is a vector quantity because it has both magnitude and direction.",
+			},
+		],
+	},
 };
 
 export default function CourseQuizPage() {

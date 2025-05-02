@@ -30,6 +30,27 @@ export interface AuthResponse {
   user: User
 }
 
+export interface Flashcard {
+  id: string
+  front: string
+  back: string
+  lastReviewed?: string
+  nextReview?: string
+  difficulty?: "easy" | "medium" | "hard"
+  courseId: string
+  setId: string
+}
+
+export interface FlashcardSet {
+  id: string
+  title: string
+  description: string
+  courseId: string
+  module: string
+  cardCount: number
+  lastStudied?: string
+}
+
 // Create axios instance
 const apiClient = axios.create({
   baseURL: API_URL,
@@ -156,5 +177,36 @@ export const authApi = {
     api.post<{ message: string }>('/auth/resend-verification', { email }),
 }
 
-// Export both the apiClient and authApi
+// Flashcard API functions
+export const flashcardApi = {
+  getFlashcardSets: (courseId: string) => 
+    api.get<FlashcardSet[]>(`/courses/${courseId}/flashcard-sets`),
+  
+  getFlashcardSet: (courseId: string, setId: string) => 
+    api.get<{ set: FlashcardSet; cards: Flashcard[] }>(`/courses/${courseId}/flashcard-sets/${setId}`),
+  
+  createFlashcardSet: (courseId: string, data: Omit<FlashcardSet, 'id' | 'cardCount'>) => 
+    api.post<FlashcardSet>(`/courses/${courseId}/flashcard-sets`, data),
+  
+  updateFlashcardSet: (courseId: string, setId: string, data: Partial<Omit<FlashcardSet, 'id' | 'cardCount'>>) => 
+    api.put<FlashcardSet>(`/courses/${courseId}/flashcard-sets/${setId}`, data),
+  
+  deleteFlashcardSet: (courseId: string, setId: string) => 
+    api.delete<{ success: boolean }>(`/courses/${courseId}/flashcard-sets/${setId}`),
+  
+  createFlashcard: (courseId: string, setId: string, data: Omit<Flashcard, 'id' | 'courseId' | 'setId'>) => 
+    api.post<Flashcard>(`/courses/${courseId}/flashcard-sets/${setId}/cards`, data),
+  
+  updateFlashcard: (courseId: string, setId: string, cardId: string, data: Partial<Omit<Flashcard, 'id' | 'courseId' | 'setId'>>) => 
+    api.put<Flashcard>(`/courses/${courseId}/flashcard-sets/${setId}/cards/${cardId}`, data),
+  
+  deleteFlashcard: (courseId: string, setId: string, cardId: string) => 
+    api.delete<{ success: boolean }>(`/courses/${courseId}/flashcard-sets/${setId}/cards/${cardId}`),
+  
+  updateFlashcardProgress: (courseId: string, setId: string, cardId: string, difficulty: 'easy' | 'medium' | 'hard') => 
+    api.post<Flashcard>(`/courses/${courseId}/flashcard-sets/${setId}/cards/${cardId}/progress`, { difficulty }),
+}
+
+// Export apiClient as default and authApi as a named export
 export default apiClient;
+// Make sure authApi is exported as a named export;

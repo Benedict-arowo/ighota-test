@@ -10,6 +10,7 @@ import {
 	User,
 	Settings,
 	LogOut,
+	Sparkles,
 } from "lucide-react";
 
 import {
@@ -74,7 +75,7 @@ export function DashboardSidebar() {
 									isActive={isActive("/dashboard/courses")}>
 									<Link href="/dashboard/courses">
 										<BookOpen className="h-4 w-4" />
-										<span>My Courses</span>
+										<span>Courses</span>
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
@@ -97,6 +98,18 @@ export function DashboardSidebar() {
 									<Link href="/dashboard/assignments">
 										<FileText className="h-4 w-4" />
 										<span>Assignments</span>
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									asChild
+									isActive={isActive(
+										"/dashboard/achievements"
+									)}>
+									<Link href="/dashboard/achievements">
+										<Sparkles className="h-4 w-4" />
+										<span>Achievements</span>
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>

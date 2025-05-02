@@ -1,45 +1,47 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { useParams, notFound } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ChevronLeft, ChevronRight, FileText, CheckCircle } from "lucide-react"
+import { useEffect, useState } from "react";
+import { useParams, notFound } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChevronLeft, ChevronRight, FileText, CheckCircle } from "lucide-react";
+import { LessonTabs } from "@/components/lesson-tabs";
 
 interface Lesson {
-  id: string
-  title: string
-  description: string
-  content: string
-  videoUrl?: string
-  attachments?: Array<{
-    id: string
-    name: string
-    url: string
-    type: string
-  }>
-  completed?: boolean
+	id: string;
+	title: string;
+	description: string;
+	content: string;
+	videoUrl?: string;
+	attachments?: Array<{
+		id: string;
+		name: string;
+		url: string;
+		type: string;
+	}>;
+	completed?: boolean;
 }
 
 interface Module {
-  id: string
-  title: string
-  lessons: Lesson[]
+	id: string;
+	title: string;
+	lessons: Lesson[];
 }
 
 // Mock data - in a real app, this would come from an API
 const courseLessons = {
-  "mathematics-wassce": [
-    {
-      id: "module-1",
-      title: "Number and Numeration",
-      lessons: [
-        {
-          id: "lesson-1-1",
-          title: "Introduction to Number Bases",
-          description: "Learn about different number systems and how to convert between them.",
-          content: `
+	"mathematics-wassce": [
+		{
+			id: "module-1",
+			title: "Number and Numeration",
+			lessons: [
+				{
+					id: "lesson-1-1",
+					title: "Introduction to Number Bases",
+					description:
+						"Learn about different number systems and how to convert between them.",
+					content: `
             <div class="prose dark:prose-invert max-w-none">
               <h2>Introduction to Number Bases</h2>
               <p>A number base (or radix) is the number of digits or symbols used to represent numbers in a positional numeral system. The most common base is base 10 (decimal), which uses the digits 0-9.</p>
@@ -92,27 +94,28 @@ const courseLessons = {
               </div>
             </div>
           `,
-          videoUrl: "https://www.youtube.com/embed/ku4KOFQ-bB4",
-          attachments: [
-            {
-              id: "att-1",
-              name: "Number Bases Cheat Sheet",
-              url: "#",
-              type: "pdf",
-            },
-            {
-              id: "att-2",
-              name: "Practice Problems",
-              url: "#",
-              type: "pdf",
-            },
-          ],
-        },
-        {
-          id: "lesson-1-2",
-          title: "Modular Arithmetic",
-          description: "Understand the principles of modular arithmetic and its applications.",
-          content: `
+					videoUrl: "https://www.youtube.com/embed/ku4KOFQ-bB4",
+					attachments: [
+						{
+							id: "att-1",
+							name: "Number Bases Cheat Sheet",
+							url: "#",
+							type: "pdf",
+						},
+						{
+							id: "att-2",
+							name: "Practice Problems",
+							url: "#",
+							type: "pdf",
+						},
+					],
+				},
+				{
+					id: "lesson-1-2",
+					title: "Modular Arithmetic",
+					description:
+						"Understand the principles of modular arithmetic and its applications.",
+					content: `
             <div class="prose dark:prose-invert max-w-none">
               <h2>Modular Arithmetic</h2>
               <p>Modular arithmetic is a system of arithmetic for integers, where numbers "wrap around" after reaching a certain value—the modulus.</p>
@@ -149,18 +152,19 @@ const courseLessons = {
               </ol>
             </div>
           `,
-        },
-      ],
-    },
-    {
-      id: "module-2",
-      title: "Algebra",
-      lessons: [
-        {
-          id: "lesson-2-1",
-          title: "Algebraic Expressions",
-          description: "Learn how to work with algebraic expressions and simplify them.",
-          content: `
+				},
+			],
+		},
+		{
+			id: "module-2",
+			title: "Algebra",
+			lessons: [
+				{
+					id: "lesson-2-1",
+					title: "Algebraic Expressions",
+					description:
+						"Learn how to work with algebraic expressions and simplify them.",
+					content: `
             <div class="prose dark:prose-invert max-w-none">
               <h2>Algebraic Expressions</h2>
               <p>An algebraic expression is a combination of variables, numbers, and operations. Understanding how to manipulate these expressions is fundamental to algebra.</p>
@@ -197,20 +201,21 @@ const courseLessons = {
               </ol>
             </div>
           `,
-        },
-      ],
-    },
-  ],
-  "english-wassce": [
-    {
-      id: "module-1",
-      title: "Grammar",
-      lessons: [
-        {
-          id: "lesson-1-1",
-          title: "Parts of Speech",
-          description: "Learn about the different parts of speech in English grammar.",
-          content: `
+				},
+			],
+		},
+	],
+	"english-wassce": [
+		{
+			id: "module-1",
+			title: "Grammar",
+			lessons: [
+				{
+					id: "lesson-1-1",
+					title: "Parts of Speech",
+					description:
+						"Learn about the different parts of speech in English grammar.",
+					content: `
             <div class="prose dark:prose-invert max-w-none">
               <h2>Parts of Speech</h2>
               <p>Parts of speech are categories of words based on their function in a sentence. Understanding these categories helps in constructing grammatically correct sentences.</p>
@@ -254,20 +259,21 @@ const courseLessons = {
               <p>"The excited children quickly ran to the colorful playground."</p>
             </div>
           `,
-        },
-      ],
-    },
-  ],
-  "biology-jamb": [
-    {
-      id: "module-1",
-      title: "Cell Structure and Organization",
-      lessons: [
-        {
-          id: "lesson-1-1",
-          title: "Cell Theory and Structure",
-          description: "Learn about the fundamental principles of cell theory and cell structure.",
-          content: `
+				},
+			],
+		},
+	],
+	"biology-jamb": [
+		{
+			id: "module-1",
+			title: "Cell Structure and Organization",
+			lessons: [
+				{
+					id: "lesson-1-1",
+					title: "Cell Theory and Structure",
+					description:
+						"Learn about the fundamental principles of cell theory and cell structure.",
+					content: `
             <div class="prose dark:prose-invert max-w-none">
               <h2>Cell Theory and Structure</h2>
               <p>The cell theory is one of the fundamental concepts in biology. It states that:</p>
@@ -327,228 +333,273 @@ const courseLessons = {
               </ol>
             </div>
           `,
-        },
-      ],
-    },
-  ],
-}
+				},
+			],
+		},
+	],
+};
 
 export default function LessonPage() {
-  const params = useParams()
-  const courseId = params.courseId as string
-  const lessonId = params.lessonId as string
+	const params = useParams();
+	const courseId = params.courseId as string;
+	const lessonId = params.lessonId as string;
 
-  const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null)
-  const [currentModule, setCurrentModule] = useState<Module | null>(null)
-  const [nextLesson, setNextLesson] = useState<{ moduleId: string; lessonId: string } | null>(null)
-  const [prevLesson, setPrevLesson] = useState<{ moduleId: string; lessonId: string } | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isCompleted, setIsCompleted] = useState(false)
+	const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
+	const [currentModule, setCurrentModule] = useState<Module | null>(null);
+	const [nextLesson, setNextLesson] = useState<{
+		moduleId: string;
+		lessonId: string;
+	} | null>(null);
+	const [prevLesson, setPrevLesson] = useState<{
+		moduleId: string;
+		lessonId: string;
+	} | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [isCompleted, setIsCompleted] = useState(false);
 
-  useEffect(() => {
-    const fetchLessonData = async () => {
-      try {
-        // In a real app, this would be an API call
-        await new Promise((resolve) => setTimeout(resolve, 500))
+	useEffect(() => {
+		const fetchLessonData = async () => {
+			try {
+				// In a real app, this would be an API call
+				await new Promise((resolve) => setTimeout(resolve, 500));
 
-        const courseLessonData = courseLessons[courseId]
-        if (!courseLessonData) {
-          notFound()
-        }
+				const courseLessonData = courseLessons[courseId];
+				if (!courseLessonData) {
+					notFound();
+				}
 
-        // Find the current lesson and its module
-        let foundLesson: Lesson | null = null
-        let foundModule: Module | null = null
-        let nextLessonData = null
-        let prevLessonData = null
+				// Find the current lesson and its module
+				let foundLesson: Lesson | null = null;
+				let foundModule: Module | null = null;
+				let nextLessonData = null;
+				let prevLessonData = null;
 
-        // Find all lessons to determine next/prev
-        const allLessons: Array<{ moduleId: string; moduleIndex: number; lessonId: string; lessonIndex: number }> = []
+				// Find all lessons to determine next/prev
+				const allLessons: Array<{
+					moduleId: string;
+					moduleIndex: number;
+					lessonId: string;
+					lessonIndex: number;
+				}> = [];
 
-        courseLessonData.forEach((module, moduleIndex) => {
-          module.lessons.forEach((lesson, lessonIndex) => {
-            allLessons.push({
-              moduleId: module.id,
-              moduleIndex,
-              lessonId: lesson.id,
-              lessonIndex,
-            })
+				courseLessonData.forEach((module, moduleIndex) => {
+					module.lessons.forEach((lesson, lessonIndex) => {
+						allLessons.push({
+							moduleId: module.id,
+							moduleIndex,
+							lessonId: lesson.id,
+							lessonIndex,
+						});
 
-            if (lesson.id === lessonId) {
-              foundLesson = lesson
-              foundModule = module
-            }
-          })
-        })
+						if (lesson.id === lessonId) {
+							foundLesson = lesson;
+							foundModule = module;
+						}
+					});
+				});
 
-        // If lesson not found
-        if (!foundLesson || !foundModule) {
-          notFound()
-        }
+				// If lesson not found
+				if (!foundLesson || !foundModule) {
+					notFound();
+				}
 
-        // Find current lesson index in the flat array
-        const currentIndex = allLessons.findIndex((item) => item.lessonId === lessonId)
+				// Find current lesson index in the flat array
+				const currentIndex = allLessons.findIndex(
+					(item) => item.lessonId === lessonId
+				);
 
-        // Set next lesson if available
-        if (currentIndex < allLessons.length - 1) {
-          const next = allLessons[currentIndex + 1]
-          nextLessonData = {
-            moduleId: next.moduleId,
-            lessonId: next.lessonId,
-          }
-        }
+				// Set next lesson if available
+				if (currentIndex < allLessons.length - 1) {
+					const next = allLessons[currentIndex + 1];
+					nextLessonData = {
+						moduleId: next.moduleId,
+						lessonId: next.lessonId,
+					};
+				}
 
-        // Set previous lesson if available
-        if (currentIndex > 0) {
-          const prev = allLessons[currentIndex - 1]
-          prevLessonData = {
-            moduleId: prev.moduleId,
-            lessonId: prev.lessonId,
-          }
-        }
+				// Set previous lesson if available
+				if (currentIndex > 0) {
+					const prev = allLessons[currentIndex - 1];
+					prevLessonData = {
+						moduleId: prev.moduleId,
+						lessonId: prev.lessonId,
+					};
+				}
 
-        setCurrentLesson(foundLesson)
-        setCurrentModule(foundModule)
-        setNextLesson(nextLessonData)
-        setPrevLesson(prevLessonData)
-        setIsCompleted(!!foundLesson.completed)
-      } catch (error) {
-        console.error("Failed to fetch lesson:", error)
-        notFound()
-      } finally {
-        setIsLoading(false)
-      }
-    }
+				setCurrentLesson(foundLesson);
+				setCurrentModule(foundModule);
+				setNextLesson(nextLessonData);
+				setPrevLesson(prevLessonData);
+				setIsCompleted(!!foundLesson.completed);
+			} catch (error) {
+				console.error("Failed to fetch lesson:", error);
+				notFound();
+			} finally {
+				setIsLoading(false);
+			}
+		};
 
-    fetchLessonData()
-  }, [courseId, lessonId])
+		fetchLessonData();
+	}, [courseId, lessonId]);
 
-  const markAsCompleted = () => {
-    // In a real app, this would be an API call to update the lesson status
-    setIsCompleted(true)
-  }
+	const markAsCompleted = () => {
+		// In a real app, this would be an API call to update the lesson status
+		setIsCompleted(true);
+	};
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        <p className="mt-4 text-muted-foreground">Loading lesson content...</p>
-      </div>
-    )
-  }
+	if (isLoading) {
+		return (
+			<div className="flex flex-col items-center justify-center min-h-[60vh]">
+				<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+				<p className="mt-4 text-muted-foreground">
+					Loading lesson content...
+				</p>
+			</div>
+		);
+	}
 
-  if (!currentLesson || !currentModule) {
-    return notFound()
-  }
+	if (!currentLesson || !currentModule) {
+		return notFound();
+	}
 
-  return (
-    <div className="space-y-8">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">{currentLesson.title}</h1>
-          <p className="text-muted-foreground">
-            {currentModule.title} • {currentLesson.description}
-          </p>
-        </div>
-        <Button asChild variant="outline">
-          <Link href={`/dashboard/courses/${courseId}`}>Back to Course</Link>
-        </Button>
-      </div>
+	return (
+		<div className="space-y-8">
+			<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+				<div>
+					<h1 className="text-3xl font-bold tracking-tight">
+						{currentLesson.title}
+					</h1>
+					<p className="text-muted-foreground">
+						{currentModule.title} • {currentLesson.description}
+					</p>
+				</div>
+				<Button asChild variant="outline">
+					<Link href={`/dashboard/courses/${courseId}`}>
+						Back to Course
+					</Link>
+				</Button>
+			</div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Lesson Content</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {currentLesson.videoUrl && (
-            <div className="aspect-video overflow-hidden rounded-lg">
-              <iframe
-                width="100%"
-                height="100%"
-                src={currentLesson.videoUrl}
-                title={currentLesson.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          )}
+			<div className="space-y-6">
+				<LessonTabs courseId={courseId} lessonId={lessonId} />
+				<Card>
+					<CardHeader>
+						<CardTitle>Lesson Content</CardTitle>
+					</CardHeader>
+					<CardContent className="space-y-6">
+						{currentLesson.videoUrl && (
+							<div className="aspect-video overflow-hidden rounded-lg">
+								<iframe
+									width="100%"
+									height="100%"
+									src={currentLesson.videoUrl}
+									title={currentLesson.title}
+									frameBorder="0"
+									allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+									allowFullScreen></iframe>
+							</div>
+						)}
 
-          <div dangerouslySetInnerHTML={{ __html: currentLesson.content }} />
+						<div
+							dangerouslySetInnerHTML={{
+								__html: currentLesson.content,
+							}}
+						/>
 
-          {currentLesson.attachments && currentLesson.attachments.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-lg font-medium mb-4">Attachments</h3>
-              <div className="grid gap-4 md:grid-cols-2">
-                {currentLesson.attachments.map((attachment) => (
-                  <Card key={attachment.id} className="flex items-center p-4">
-                    <FileText className="h-8 w-8 text-primary mr-4" />
-                    <div className="flex-1">
-                      <h4 className="font-medium">{attachment.name}</h4>
-                      <p className="text-sm text-muted-foreground">{attachment.type.toUpperCase()}</p>
-                    </div>
-                    <Button variant="outline" size="sm" asChild>
-                      <Link href={attachment.url}>Download</Link>
-                    </Button>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+						{currentLesson.attachments &&
+							currentLesson.attachments.length > 0 && (
+								<div className="mt-8">
+									<h3 className="text-lg font-medium mb-4">
+										Attachments
+									</h3>
+									<div className="grid gap-4 md:grid-cols-2">
+										{currentLesson.attachments.map(
+											(attachment) => (
+												<Card
+													key={attachment.id}
+													className="flex items-center p-4">
+													<FileText className="h-8 w-8 text-primary mr-4" />
+													<div className="flex-1">
+														<h4 className="font-medium">
+															{attachment.name}
+														</h4>
+														<p className="text-sm text-muted-foreground">
+															{attachment.type.toUpperCase()}
+														</p>
+													</div>
+													<Button
+														variant="outline"
+														size="sm"
+														asChild>
+														<Link
+															href={
+																attachment.url
+															}>
+															Download
+														</Link>
+													</Button>
+												</Card>
+											)
+										)}
+									</div>
+								</div>
+							)}
+					</CardContent>
+				</Card>
+			</div>
 
-      <div className="flex flex-col sm:flex-row justify-between gap-4">
-        <div className="flex gap-2">
-          {prevLesson ? (
-            <Button variant="outline" asChild>
-              <Link href={`/dashboard/courses/${courseId}/lessons/${prevLesson.lessonId}`}>
-                <ChevronLeft className="mr-2 h-4 w-4" />
-                Previous Lesson
-              </Link>
-            </Button>
-          ) : (
-            <Button variant="outline" disabled>
-              <ChevronLeft className="mr-2 h-4 w-4" />
-              Previous Lesson
-            </Button>
-          )}
+			<div className="flex flex-col sm:flex-row justify-between gap-4">
+				<div className="flex gap-2">
+					{prevLesson ? (
+						<Button variant="outline" asChild>
+							<Link
+								href={`/dashboard/courses/${courseId}/lessons/${prevLesson.lessonId}`}>
+								<ChevronLeft className="mr-2 h-4 w-4" />
+								Previous Lesson
+							</Link>
+						</Button>
+					) : (
+						<Button variant="outline" disabled>
+							<ChevronLeft className="mr-2 h-4 w-4" />
+							Previous Lesson
+						</Button>
+					)}
 
-          {nextLesson ? (
-            <Button asChild>
-              <Link href={`/dashboard/courses/${courseId}/lessons/${nextLesson.lessonId}`}>
-                Next Lesson
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          ) : (
-            <Button disabled>
-              Next Lesson
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          )}
-        </div>
+					{nextLesson ? (
+						<Button asChild>
+							<Link
+								href={`/dashboard/courses/${courseId}/lessons/${nextLesson.lessonId}`}>
+								Next Lesson
+								<ChevronRight className="ml-2 h-4 w-4" />
+							</Link>
+						</Button>
+					) : (
+						<Button disabled>
+							Next Lesson
+							<ChevronRight className="ml-2 h-4 w-4" />
+						</Button>
+					)}
+				</div>
 
-        <Button
-          variant={isCompleted ? "outline" : "default"}
-          className={
-            isCompleted
-              ? "bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30 border-green-200 dark:border-green-900"
-              : ""
-          }
-          onClick={markAsCompleted}
-          disabled={isCompleted}
-        >
-          {isCompleted ? (
-            <>
-              <CheckCircle className="mr-2 h-4 w-4" />
-              Completed
-            </>
-          ) : (
-            "Mark as Completed"
-          )}
-        </Button>
-      </div>
-    </div>
-  )
+				<Button
+					variant={isCompleted ? "outline" : "default"}
+					className={
+						isCompleted
+							? "bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30 border-green-200 dark:border-green-900"
+							: ""
+					}
+					onClick={markAsCompleted}
+					disabled={isCompleted}>
+					{isCompleted ? (
+						<>
+							<CheckCircle className="mr-2 h-4 w-4" />
+							Completed
+						</>
+					) : (
+						"Mark as Completed"
+					)}
+				</Button>
+			</div>
+		</div>
+	);
 }
